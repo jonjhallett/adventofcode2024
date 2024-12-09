@@ -51,14 +51,9 @@ def is_safe_with_dampening(levels: list[int]) -> bool:
 
 
 def read_list_of_levels(filename: str) -> list[list[int]]:
-    list_of_levels = []
 
     with open(filename) as f:
-        for line in f:
-            levels = list(map(int, line.split()))
-            list_of_levels.append(levels)
-
-    return list_of_levels
+        return [list(map(int, line.split())) for line in f]
 
 
 class TestIsSafe(unittest.TestCase):
