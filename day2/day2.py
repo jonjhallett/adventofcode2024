@@ -1,4 +1,5 @@
 from itertools import combinations
+from operator import sub
 from typing_extensions import Self
 import unittest
 
@@ -22,14 +23,10 @@ def main() -> None:
 
 
 def level_deltas(levels: list[int]) -> list[int]:
-    deltas = []
-
-    previous_level = levels[0]
-    for level in levels[1:]:
-        delta = level - previous_level
-        previous_level = level
-        deltas.append(delta)
-
+    previous_levels = levels[0:-1]
+    next_levels = levels[1:]
+    deltas = [next_level - previous_level for next_level, previous_level
+              in zip(next_levels, previous_levels)]
     return deltas
 
 
