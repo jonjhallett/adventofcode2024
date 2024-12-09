@@ -7,18 +7,11 @@ import unittest
 def main() -> None:
     list_of_levels = read_list_of_levels("input.txt")
 
-    number_of_safe_levels = 0
-    for levels in list_of_levels:
-        if is_safe(levels):
-            number_of_safe_levels += 1
-
+    number_of_safe_levels = len(list(filter(is_safe, list_of_levels)))
     print(number_of_safe_levels)
 
-    number_of_dampened_safe_levels = 0
-    for levels in list_of_levels:
-        if is_safe_with_dampening(levels):
-            number_of_dampened_safe_levels += 1
-
+    number_of_dampened_safe_levels = len(list(filter(is_safe_with_dampening,
+                                                     list_of_levels)))
     print(number_of_dampened_safe_levels)
 
 
