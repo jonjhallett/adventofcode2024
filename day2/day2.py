@@ -34,13 +34,19 @@ def is_safe(levels: list[int]) -> bool:
 
 
 def is_safe_with_dampening(levels: list[int]) -> bool:
-    number_of_levels = len(levels)
-    list_of_dampened_levels = map(list,
-                                  combinations(levels, number_of_levels - 1))
+    list_of_dampened_levels = combinations_with_one_missing(levels)
+
     for dampened_levels in list_of_dampened_levels:
         if is_safe(dampened_levels):
             return True
     return False
+
+
+def combinations_with_one_missing(levels: list[int]) -> list[list[int]]:
+    number_of_levels = len(levels)
+    levels_with_one_missing = map(list,
+                                  combinations(levels, number_of_levels - 1))
+    return list(levels_with_one_missing)
 
 
 def read_list_of_levels(filename: str) -> list[list[int]]:
@@ -74,6 +80,10 @@ class TestIsSafe(unittest.TestCase):
         list_of_levels = read_list_of_levels("test.txt")
         self.assertListEqual(list_of_levels[0], [7, 6, 4, 2, 1])
         self.assertListEqual(list_of_levels[5], [1, 3, 6, 7, 9])
+
+    def test_read_list_of_levels(self: Self) -> None:
+        self.assertListEqual(combinations_with_one_missing([1, 2, 3]),
+                             [[1, 2], [1, 3], [2, 3]])
 
 
 if __name__ == "__main__":
