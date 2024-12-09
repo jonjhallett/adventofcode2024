@@ -78,7 +78,7 @@ class TestIsSafe(unittest.TestCase):
         self.assertListEqual(list_of_levels[0], [7, 6, 4, 2, 1])
         self.assertListEqual(list_of_levels[5], [1, 3, 6, 7, 9])
 
-    def test_read_list_of_levels(self: Self) -> None:
+    def test_combinations_with_one_missing(self: Self) -> None:
         self.assertListEqual(combinations_with_one_missing([1, 2, 3]),
                              [[1, 2], [1, 3], [2, 3]])
 
