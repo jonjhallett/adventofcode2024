@@ -36,16 +36,17 @@ def level_deltas(levels: list[int]) -> list[int]:
 def is_safe(levels: list[int]) -> bool:
     deltas = level_deltas(levels)
 
-    if all([1<= delta <= 3 for delta in deltas]):
+    if all([1 <= delta <= 3 for delta in deltas]):
         return True
     if all([-3 <= delta <= -1 for delta in deltas]):
         return True
-    return False 
+    return False
 
 
 def is_safe_with_dampening(levels: list[int]) -> bool:
     number_of_levels = len(levels)
-    list_of_dampened_levels = combinations(levels, number_of_levels - 1)
+    list_of_dampened_levels = map(list,
+                                  combinations(levels, number_of_levels - 1))
     for dampened_levels in list_of_dampened_levels:
         if is_safe(dampened_levels):
             return True
@@ -92,4 +93,3 @@ class TestIsSafe(unittest.TestCase):
 
 if __name__ == "__main__":
     main()
-
