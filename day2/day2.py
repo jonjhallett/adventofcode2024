@@ -36,10 +36,7 @@ def is_safe(levels: list[int]) -> bool:
 def is_safe_with_dampening(levels: list[int]) -> bool:
     list_of_dampened_levels = combinations_with_one_missing(levels)
 
-    for dampened_levels in list_of_dampened_levels:
-        if is_safe(dampened_levels):
-            return True
-    return False
+    return any(filter(is_safe, list_of_dampened_levels))
 
 
 def combinations_with_one_missing(levels: list[int]) -> list[list[int]]:
