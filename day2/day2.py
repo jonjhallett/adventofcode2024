@@ -1,5 +1,4 @@
 from itertools import combinations
-from operator import sub
 from typing_extensions import Self
 import unittest
 
