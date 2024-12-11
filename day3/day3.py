@@ -8,7 +8,6 @@ def main() -> None:
         corrupted_instructions = file.read()
 
     print(add_mul_instructions(corrupted_instructions))
-    corrupted_instructions_with_donts_removed = remove_donts(corrupted_instructions)
     print(add_mul_instructions_in_dos(corrupted_instructions))
 
 
@@ -22,13 +21,13 @@ def add_mul_instructions(corrupted_instructions: str) -> int:
     return total_muls
 
 
-def remove_donts(corrupted_instructions: str) -> str:
+def donts_removed(corrupted_instructions: str) -> str:
     return re.sub(r'don\'t\(\).*?(do\(\)|\Z)', '',
                   corrupted_instructions, flags=re.MULTILINE | re.DOTALL)
 
 
 def add_mul_instructions_in_dos(corrupted_instructions: str) -> int:
-    instructions_with_donts_removed = remove_donts(corrupted_instructions)
+    instructions_with_donts_removed = donts_removed(corrupted_instructions)
     return add_mul_instructions(instructions_with_donts_removed)
 
 
@@ -38,17 +37,17 @@ class TestDay3(unittest.TestCase):
         self.assertEqual(add_mul_instructions(corrupted_instructions),
                                                    161)
 
-    def test_remove_donts(self: Self) -> None:
+    def test_donts_removed(self: Self) -> None:
         dont_fixture = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
-        self.assertEqual(remove_donts(dont_fixture),
+        self.assertEqual(donts_removed(dont_fixture),
                          "xmul(2,4)&mul[3,7]!^?mul(8,5))")
 
         dont_fixture_with_newline = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)\n+mul(32,64](mul(11,8)undo()?mul(8,5))"
-        self.assertEqual(remove_donts(dont_fixture_with_newline),
+        self.assertEqual(donts_removed(dont_fixture_with_newline),
                          "xmul(2,4)&mul[3,7]!^?mul(8,5))")
 
         dont_at_end_fixture = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)un?mul(8,5))"
-        self.assertEqual(remove_donts(dont_at_end_fixture),
+        self.assertEqual(donts_removed(dont_at_end_fixture),
                          "xmul(2,4)&mul[3,7]!^")
 
     def test_add_mul_instructions_in_dos(self: Self) -> None:
