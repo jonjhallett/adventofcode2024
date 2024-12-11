@@ -37,10 +37,14 @@ class TestDay3(unittest.TestCase):
         corrupted_instructions = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
         self.assertEqual(add_mul_instructions(corrupted_instructions),
                                                    161)
+
     def test_remove_donts(self: Self) -> None:
-        dont_fixture = """xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+
-mul(32,64](mul(11,8)undo()?mul(8,5))"""
+        dont_fixture = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
         self.assertEqual(remove_donts(dont_fixture),
+                         "xmul(2,4)&mul[3,7]!^?mul(8,5))")
+
+        dont_fixture_with_newline = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)\n+mul(32,64](mul(11,8)undo()?mul(8,5))"
+        self.assertEqual(remove_donts(dont_fixture_with_newline),
                          "xmul(2,4)&mul[3,7]!^?mul(8,5))")
 
         dont_at_end_fixture = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)un?mul(8,5))"
