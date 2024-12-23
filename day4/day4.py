@@ -26,32 +26,42 @@ class Puzzle:
         count = 0
         for j in range(0, len(self.rows)):
             for i in range(0, len(self.rows[0])):
-                for delta_j in range(-1, 2):
-                    for delta_i in range(-1, 2):
-                        if delta_i == delta_j == 0:
-                            next
-                        count += self.instances_at_position(word, i, j,
-                                                            delta_i, delta_j)
+                count += self.instances_at_position(word, i, j)
         return count
 
     def instances_at_position(self: Self, word: str,
-                              column: int, row: int,
-                              delta_i, delta_j) -> int:
-        if not 0 <= column < len(self.rows[0]):
-            return 0
-        if not 0 <= row < len(self.rows):
-            return 0
+                              column: int, row: int) -> int:
 
         count = 0
-        if self.rows[row][column] == word[0]:
+        for delta_j in range(-1, 2):
+            for delta_i in range(-1, 2):
+                if delta_i == delta_j == 0:
+                    next
+                if self.instance_in_direction(word,
+                                              column, row,
+                                              delta_i, delta_j):
+                    count += 1
+        return count
+
+    def instance_in_direction(self: Self, word: str,
+                              column: int, row: int,
+                              delta_i, delta_j) -> bool:
+        while True:
+            if not 0 <= column < len(self.rows[0]):
+                return False
+            if not 0 <= row < len(self.rows):
+                return False
+
+            if self.rows[row][column] != word[0]:
+                return False
+
             rest_of_word = word[1:]
             if rest_of_word == "":
-                return 1
-            count = self.instances_at_position(rest_of_word,
-                                                        column + delta_i,
-                                                        row + delta_j,
-                                                        delta_i, delta_j)
-        return count
+                return True
+
+            word = rest_of_word
+            column += delta_i
+            row += delta_j
 
 
 class TestDay4(unittest.TestCase):
@@ -77,14 +87,14 @@ class TestDay4(unittest.TestCase):
 
     def test_instance_at_position(self: Self) -> None:
         puzzle = Puzzle(TestDay4.fixture_iterable)
-        self.assertEqual(puzzle.instances_at_position("XMAS", -1, 0, 0, 0), 0)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 6, 0, 0, 0), 0)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 0, -1, 0, 0), 0)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 0, 5, 0, 0), 0)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 0, 0, 0, 0), 0)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 5, 0, 0, 0), 0)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 0, 3, 1, 0), 1)
-        self.assertEqual(puzzle.instances_at_position("XMAS", 2, 0, 1, 1), 1)
+        self.assertEqual(puzzle.instances_at_position("XMAS", -1, 0), 0)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 6, 0), 0)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 0, -1), 0)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 0, 5), 0)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 0, 0), 0)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 5, 0), 0)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 0, 3), 1)
+        self.assertEqual(puzzle.instances_at_position("XMAS", 2, 0), 1)
 
     def test_instances_found_complex(self: Self) -> None:
         complex_fixture_string = """
